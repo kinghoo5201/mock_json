@@ -29,9 +29,11 @@ app.use(formidable({
     multiples: true, //将req.files保存为数组
 
 }));
-
-app.get('/', (req, res, next) => {
+app.use((req, res, next) => {
     util.print.green('get : ' + req.originalUrl);
+    return next();
+})
+app.get('/', (req, res, next) => {
     const files = fs.readdirSync(jsonDir);
     const descs = [];
     files.forEach(item => {
@@ -70,7 +72,6 @@ app.post('/api', (req, res, next) => {
         return next();
     }
     try {
-        util.print.yellow('post:' + req.originalUrl);
         switch (req.fields.method) {
             case 'addData':
                 const fileName = Date.now() + '.txt';
@@ -90,7 +91,7 @@ app.post('/api', (req, res, next) => {
 });
 
 app.get((req, res, next) => {
-    util.print.red('bad request:' + req.originalUrl);
+    util.print.red('bad request::' + req.method + req.originalUrl);
     return res.send('bad path');
 });
 

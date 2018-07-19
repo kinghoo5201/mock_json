@@ -6,6 +6,7 @@ const path = require('path');
 const app = express();
 const jsonDir = './jsons';
 const upDir = './upload';
+const sep = '#:|:#'
 
 if (!fs.existsSync(jsonDir)) {
     util.print.red(jsonDir + ' is not exist! start to mkdir' + jsonDir);
@@ -32,8 +33,14 @@ app.use(formidable({
 app.get('/', (req, res, next) => {
     util.print.green('get : ' + req.originalUrl);
     const files = fs.readdirSync(jsonDir);
+    const descs = [];
+    files.forEach(item => {
+        const data = fs.readFileSync(jsonDir + '/' + item, 'utf-8');
+        descs.push(data.split(sep)[0]);
+    });
     return res.render('index', {
-        files
+        files,
+        descs
     });
 });
 
@@ -45,7 +52,7 @@ app.get('/api', (req, res, next) => {
         switch (req.query.method) {
             case 'getData':
                 const data = fs.readFileSync(jsonDir + '/' + req.query.data + '.txt', 'utf-8');
-                return res.send(data);
+                return res.send(data.split(sep)[1]);
             default:
                 return next();
         }
@@ -63,7 +70,7 @@ app.post('/api', (req, res, next) => {
         switch (req.fields.method) {
             case 'addData':
                 const fileName = Date.now() + '.txt';
-                fs.writeFileSync(jsonDir + '/' + fileName, req.fields.data, 'utf-8');
+                fs.writeFileSync(jsonDir + '/' + fileName, req.fields.desc + sep + req.fields.data, 'utf-8');
                 return res.redirect('back');
 
             case 'deleteData':

@@ -93,14 +93,7 @@ app.get((req, res, next) => {
     util.print.red('bad request:' + req.originalUrl);
     return res.send('bad path');
 });
-let PORT = 2048;
-try {
-    app.listen(2048, () => {
-        util.print.yellow('server is runing at:' + PORT);
-    });
-} catch (e) {
-    util.print.red('port:' + PORT + ' has used! start server at port :' + PORT++);
-    app.listen(PORT, () => {
-        util.print.yellow('server is runing at:' + PORT);
-    });
-}
+
+app.listen(2048, () => {
+    util.print.yellow('server is runing at:2048');
+});

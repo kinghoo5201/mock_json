@@ -30,7 +30,7 @@ app.use(formidable({
 
 }));
 app.use((req, res, next) => {
-    util.print.green('get : ' + req.originalUrl);
+    util.print.green(req.method + ' : ' + req.originalUrl);
     return next();
 })
 app.get('/', (req, res, next) => {

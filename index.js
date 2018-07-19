@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const jsonDir = './jsons';
 const upDir = './upload';
-const sep = '#:|:#'
+const sep = '-||#:#|#:#||-'
 
 if (!fs.existsSync(jsonDir)) {
     util.print.red(jsonDir + ' is not exist! start to mkdir' + jsonDir);
@@ -42,7 +42,8 @@ app.get('/', (req, res, next) => {
     });
     return res.render('index', {
         files,
-        descs
+        descs,
+        sep
     });
 });
 

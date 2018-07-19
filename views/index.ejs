@@ -11,7 +11,7 @@
 <body>
     <form action="/api" method="POST">
         <input type="hidden" name="method" value="addData">
-        <textarea name="data" style="width:100%;display:block;height:300px;resize:none;" placeholder="这里输入你要的json的内容千万不能出现#:|:#的组合"></textarea>
+        <textarea name="data" style="width:100%;display:block;height:300px;resize:none;" placeholder="这里输入你要的json的内容千万不能出现<%=sep%>的组合"></textarea>
         <input type="text" name="desc">
         <input type="submit" value="submit">
     </form>

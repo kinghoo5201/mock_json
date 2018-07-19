@@ -36,13 +36,16 @@ app.use((req, res, next) => {
 app.get('/', (req, res, next) => {
     const files = fs.readdirSync(jsonDir);
     const descs = [];
+    const conts = [];
     files.forEach(item => {
         const data = fs.readFileSync(jsonDir + '/' + item, 'utf-8');
         descs.push(data.split(sep)[0]);
+        conts.push(data.split(sep)[1]);
     });
     return res.render('index', {
         files,
         descs,
+        conts,
         sep
     });
 });
@@ -78,7 +81,10 @@ app.post('/api', (req, res, next) => {
                 const fileName = Date.now() + '.txt';
                 fs.writeFileSync(jsonDir + '/' + fileName, req.fields.desc + sep + req.fields.data, 'utf-8');
                 return res.redirect('back');
-
+            case 'modifyData':
+                const tempName = req.fields.fileName;
+                fs.writeFileSync(jsonDir + '/' + tempName, req.fields.desc + sep + req.fields.data, 'utf-8');
+                return res.redirect('back');
             case 'deleteData':
                 fs.unlinkSync(jsonDir + '/' + req.fields.name);
                 return res.redirect('back');

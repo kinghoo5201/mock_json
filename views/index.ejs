@@ -9,11 +9,13 @@
 </head>
 
 <body>
-    <form action="/api" method="POST">
-        <input type="hidden" name="method" value="addData">
-        <textarea name="data" style="width:100%;display:block;height:300px;resize:none;" placeholder="这里输入你要的json的内容千万不能出现<%=sep%>的组合"></textarea>
-        <input type="text" name="desc" placeholder="说明，可以为空，用来标注数据用途">
+    <form id="main-form" action="/api" method="POST">
+        <input type="hidden" name="fileName" class="form-filename">
+        <input class="form-method" type="hidden" name="method" value="addData">
+        <textarea class="form-textarea" name="data" style="width:100%;display:block;height:300px;resize:none;" placeholder="这里输入你要的json的内容千万不能出现<%=sep%>的组合"></textarea>
+        <input class="form-input" type="text" name="desc" placeholder="说明，可以为空，用来标注数据用途">
         <input type="submit" value="submit">
+        <input class="form-cancel" type="button" value="cancel modify" style="display:none;">
     </form>
     <div>
         <h2>json list</h2>
@@ -41,7 +43,23 @@
                     <span style="display:inline-block;padding:0 20px;background:#efefef;">
                         http://localhost:2048/api?method=getData&data=<%=item.replace(/\.txt$/,'')%>
                     </span>
-                    <form action="/api" method="POST" style="display: inline;margin-left: 100px;">
+                    <input class="modify-data" type="button" value="modify"
+                    <% descs.forEach((desc,i)=>{ 
+                        if(i===index){
+                        %>
+                    data-desc="<%=desc?encodeURI(desc):''%>"
+                    <% }
+                    }) %>
+                    <% conts.forEach((cont,i)=>{ 
+                        if(i===index){
+                        %>
+                    data-cont="<%=cont?encodeURI(cont):''%>"
+                    <% }
+                    }) %>
+                    data-name="<%=item%>"
+                    style="margin-left:10px;"
+                    >
+                    <form action="/api" method="POST" style="display: inline;margin-left: 10px;">
                         <input type="hidden" name="method" value="deleteData">
                         <input type="hidden" name="name" value="<%=item%>">
                         <input type="submit" value="delete">
@@ -50,6 +68,32 @@
                 <% }) %>
         </ul>
     </div>
+    <script>
+    document.addEventListener('click',function(e){
+        var target=e.target;
+        if(target.getAttribute('class')==='modify-data'){
+            var form=document.getElementById('main-form');
+            var desc=decodeURI(target.getAttribute('data-desc'));
+            var cont=decodeURI(target.getAttribute('data-cont'));
+            var fileName=target.getAttribute('data-name');
+            form.getElementsByClassName('form-method')[0].value='modifyData';
+            form.getElementsByClassName('form-textarea')[0].value=cont;
+            form.getElementsByClassName('form-input')[0].value=desc;
+            form.getElementsByClassName('form-filename')[0].value=fileName;
+            form.getElementsByClassName('form-cancel')[0].style.display='inline';
+            return;
+        }
+        if(target.getAttribute('class')==='form-cancel'){
+            var form=document.getElementById('main-form');
+            form.getElementsByClassName('form-filename')[0].value='';
+            form.getElementsByClassName('form-method')[0].value='addData';
+            form.getElementsByClassName('form-textarea')[0].value='';
+            form.getElementsByClassName('form-input')[0].value='';
+            target.style.display='none';
+            return;
+        }
+    })
+    </script>
 </body>
 
 </html>

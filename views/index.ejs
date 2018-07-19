@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>mock json</title>
+</head>
+
+<body>
+    <form action="/api" method="POST">
+        <input type="hidden" name="method" value="addData">
+        <textarea name="data" style="width:100%;display:block;height:300px;resize:none;" placeholder="这里输入你要的json的内容"></textarea>
+        <input type="submit" value="submit">
+    </form>
+    <div>
+        <h2>json list</h2>
+        <hr>
+        <ul>
+            <% files.forEach(item=>{ %>
+                <li>
+                click(preview):
+                    <a href="http://localhost:2048/api?method=getData&data=<%=item.replace(/\.txt$/,'')%>" target="_blank">
+                        <%=item.replace(/\.txt$/,'')%>
+                    </a>
+                    copy:
+                    <span style="display:inline-block;padding:0 20px;background:#efefef;">
+                        http://localhost:2048/api?method=getData&data=<%=item.replace(/\.txt$/,'')%>
+                    </span>
+                    <form action="/api" method="POST" style="display: inline;margin-left: 100px;">
+                        <input type="hidden" name="method" value="deleteData">
+                        <input type="hidden" name="name" value="<%=item%>">
+                        <input type="submit" value="delete">
+                    </form>
+                </li>
+                <% }) %>
+        </ul>
+    </div>
+</body>
+
+</html>

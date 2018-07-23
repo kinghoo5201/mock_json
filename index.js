@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 });
 app.get("/", (req, res, next) => {
   let files = fs.readdirSync(jsonDir);
-  files.sort();
+  files.reverse();
   const descs = [];
   const conts = [];
   files.forEach(item => {

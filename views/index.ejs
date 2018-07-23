@@ -59,10 +59,10 @@
                     data-name="<%=item%>"
                     style="margin-left:10px;"
                     >
-                    <form action="/api" method="POST" style="display: inline;margin-left: 10px;">
+                    <form class="del_form" action="/api" method="POST" style="display: inline;margin-left: 10px;">
                         <input type="hidden" name="method" value="deleteData">
                         <input type="hidden" name="name" value="<%=item%>">
-                        <input type="submit" value="delete">
+                        <input class="del_ipt" type="submit" value="delete">
                     </form>
                 </li>
                 <% }) %>
@@ -91,6 +91,12 @@
             form.getElementsByClassName('form-input')[0].value='';
             target.style.display='none';
             return;
+        }
+        if(target.getAttribute('class')==='del_ipt'){
+            var form=target.parentElement;
+            if(!confirm('are your sure to delete it!')){
+                return e.preventDefault();
+            }
         }
     })
     </script>

@@ -36,7 +36,8 @@ app.use((req, res, next) => {
   return next();
 });
 app.get("/", (req, res, next) => {
-  const files = fs.readdirSync(jsonDir);
+  let files = fs.readdirSync(jsonDir);
+  files.sort();
   const descs = [];
   const conts = [];
   files.forEach(item => {
@@ -120,5 +121,5 @@ app.get((req, res, next) => {
 
 app.listen(2048, () => {
   util.print.yellow("server is runing at:2048\nnow opening browser...");
-  return cp.exec("start http://localhost:2048");
+  //return cp.exec("start http://localhost:2048");
 });

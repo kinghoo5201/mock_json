@@ -4,6 +4,6 @@
 ```shell
 npm i
 npm start
+```
 open  localhost:2048 
 then you can add your data you needed
-```

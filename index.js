@@ -2,6 +2,7 @@ const express = require("express");
 const cp = require("child_process");
 const formidable = require("express-formidable");
 const fs = require("fs");
+const sp = require('superagent');
 const util = require("./util");
 const path = require("path");
 const app = express();
@@ -78,6 +79,28 @@ app.use("/api", (req, res, next) => {
   } catch (e) {
     return next();
   }
+});
+app.get('/api-ajax', (req, res, next) => {
+  if (req.query.type) {
+    switch (req.query.type) {
+      case 'getPage':
+        if (!req.query.url) {
+          return res.send('false');
+        }
+        return sp.get(req.query.url)
+          .then(rs => {
+            return res.send(rs.text);
+          })
+          .catch(e => {
+            return res.send('false');
+          })
+      default:
+        return res.send('false');
+    }
+  } else {
+    return res.send('false');
+  }
+  return res.send(req.query);
 });
 
 app.post("/api", (req, res, next) => {
